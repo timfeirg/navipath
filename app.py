@@ -25,8 +25,8 @@ class PathHandler(tornado.web.RequestHandler):
 
 
 navipath_app = tornado.web.Application([
-    (r'/path.json', PathHandler),
-    (r'/poi.json', POIHandler),
+    (r'/path.peter', PathHandler),
+    (r'/poi.peter', POIHandler),
 ])
 
 
