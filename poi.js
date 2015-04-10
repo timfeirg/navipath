@@ -1,0 +1,10 @@
+
+var pois = {
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "Point", "coordinates": [ -291.831046548757683, 77.355148688307423 ] } },
+{ "type": "Feature", "properties": { "id": 2 }, "geometry": { "type": "Point", "coordinates": [ -291.836241318722955, 77.366229960008837 ] } }
+]
+};
