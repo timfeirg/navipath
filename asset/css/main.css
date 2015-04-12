@@ -1,0 +1,19 @@
+#map {
+	margin-top:10px; 
+	margin-left:200px; 
+	width:1000px;
+	height:600px;
+	border-radius:3px;
+}
+ 
+ .glyphicon {
+    font-size: 20px;
+}
+
+.glyphicon.glyphicon-th {
+    font-size: 25px;
+}
+
+.footer {
+text-align:center;
+}
