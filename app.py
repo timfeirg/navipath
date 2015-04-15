@@ -16,28 +16,38 @@ import tornado.web
 class POIHandler(tornado.web.RequestHandler):
 
     def get(self):
+        """
+        * `user_id` (mongo object id, optional) - user id
+        * `query` (string, optional) - custom search parameter, if provided,
+        will be searched against all tags in nearby places, if empty, recommend
+        poi based on distance
+        """
         self.write('Hello, world')
 
     def post(self):
         """
         * `user_id` (mongo object id, optional) - user id
-        * `location` (geojson feature, point) - geojson feature, with all interested properties
-        * `poi_id` (mongo object id) - generated the same way as `place_id`
-        * `name` (string) - name of the point
-        * `tag` (list of string, optional) - feature of the poi
+        * `location` (geojson feature, point) - geojson feature, with all
+        interested properties
+        * `poi_tag` (list of string, optional) - feature of the poi
         """
-        poi_id = self.get_argument('poi_id')
-        poi_file = self.get_argument('poi_file')
         user_id = self.get_argument('user_id', None)
-        user_id = self.get_argument('user_id', None)
-        doc = {'poi': }
+        location = self.get_argument('location')
+        poi_tag = self.get_argument('poi_tag', None)
+
+        doc = {
+            'location': location,
+            'poi_id': make_poi_id(**location['features'])
+        }
+        if user_id:
+            doc.update({'user_id': user_id})
+
+        if poi_tag:
+            doc.update({'poi_tag': poi_tag})
+
         self.settings['db']['poi'].insert(doc, callback=insert_callback)
         responson = {'status': 'OK'}
         self.write(responson)
-
-
-def insert_callback(result, error):
-    print(repr(result))
 
 
 class PathHandler(tornado.web.RequestHandler):
@@ -56,6 +66,7 @@ class PathHandler(tornado.web.RequestHandler):
         # destination_id = self.get_argument('destination_id')
         # path_file = self.get_argument('path_file')
         # user_id = self.get_argument('user_id', None)
+        pass
 
 mongo_client = motor.MotorClient('mongodb://localhost:27017')
 navipath_db = mongo_client['navipath']
@@ -67,6 +78,16 @@ navipath_app = tornado.web.Application(
     db=navipath_db,
     debug=True,
 )
+
+def insert_callback(result, error):
+    print(repr(result))
+
+
+def make_poi_id(longitude, latitude):
+    long_str = round(longitude, 12)
+    lat_str = round(latitude, 12)
+    obj_id = long_str + lat_str
+    return obj_id
 
 
 if __name__ == '__main__':
