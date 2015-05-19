@@ -43,7 +43,7 @@ $("#new_poi").click( function(e){
 function setPostParams(){
   from_tag = document.getElementById('from').value;
   to_tag   = document.getElementById('to').value;
-  postData = {"status": 0, "path": paths, "from": from_tag, "to": to_tag};
+  postData = {"status": 0, "path": path, "from": from_tag, "to": to_tag};
   return postData;
 }
 
