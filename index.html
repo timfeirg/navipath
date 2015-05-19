@@ -1,130 +1,90 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>Navipath</title>
-      <meta charset="utf-8"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="icon" href="asset/images/icon.png">
-      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-      <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-      <!-- Latest compiled and minified CSS of bootstrap -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-      <!-- Latest compiled and minified JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-      <!-- customize CSS!-->
-      <link rel="stylesheet" href="asset/css/main.css"/>
-	   </head>
-   <body background="asset/images/bg.png">
-      <nav class="navbar navbar-default">
-         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-               <a class="navbar-brand" href="#map">
-               <img alt="Brand" src="asset/images/icon.png">
-               </a>
-               <a class="navbar-brand" href=""><p style="margin-top:7px">Navipath</p></a>
+  <head>
+    <title>Navipath</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="asset/images/icon.png">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <!-- Latest compiled and minified CSS of bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- customize CSS!-->
+    <link rel="stylesheet" href="asset/css/main.css"/>
+  </head>
+  <body background="asset/images/bg.png">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#map">
+            <img alt="Brand" src="asset/images/icon.png">
+          </a>
+          <a class="navbar-brand" href="/"><p style="margin-top:7px">Navipath</p></a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-navbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a><span class="glyphicon glyphicon-th" data-toggle="popover"  data-placement="bottom" title="Contributors" data-content="Timlentse  Timfeirg"></span></a></li>
+          </ul>
+          <!-- new path -->
+          <form class="navbar-form navbar-right" id='path'>
+            <div class="form-group">
+              <input type="text" class="form-control" id="from", name="from" placeholder="From">
+              <input type="text" class="form-control" id="to", name="to"  placeholder="TO">
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-navbar">
-               <ul class="nav navbar-nav navbar-right">
-                  <li><a><span class="glyphicon glyphicon-th" data-toggle="popover"  data-placement="bottom" title="Contributors" 
-                     data-content="Timlentse  Timfeirg"></span></a></li>
-                  <li><a href="http://github.com/timfeirg/navipath">View On Github</a></li>
-               </ul>
-               <form class="navbar-form navbar-right" id='path' role="search" method='post'>
-                  <div class="form-group">
-                     <input type="text" class="form-control" id="from", name="from" placeholder="From">
-                     <input type="text" class="form-control" id="to", name="to"  placeholder="TO">
-                  </div>
-                  <button id="navi" class="btn btn-primary">Navigate</button>
-                  <button id="new_path" class="btn  btn-info">New Path</button>
-               </form>
-              <!-- New pois -->
-               <form class="navbar-form navbar-right" id='path' role="search" method='post'>
-                  <div class="form-group">
-                     <input type="text" class="form-control" id="poi", name="location"  placeholder="POI">
-                  </div>
-                  <button id="new_pois" class="btn  btn-info">New POi</button>
-               </form>
+            <button id="navigate" class="btn btn-primary">Navigate</button>
+            <button id="new_path" class="btn  btn-info">New Path</button>
+          </form>
+          <!-- New pois -->
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" class="form-control" id="poi", name="location"  placeholder="POI">
             </div>
-            <!-- /.navbar-collapse -->
-         </div>
-         <!-- /.container-fluid -->
-      </nav>
-      <div>
-         <div id="map"></div>
-		 <br>
-         <div class="footer">
-            © NaviPath By 
-            <a href="https://github.com/timlentse">Timlentse</a>
-            &
-            <a href="https://github.com/timfeirg">Timfeirg </a> 
-         </div>
+            <button id="new_poi" class="btn  btn-info">New POi</button>
+          </form>
+        </div>
+        <!-- /.navbar-collapse -->
       </div>
-      <script src="asset/js/poi.js" type="text/javascript"></script>
-      <script> 
-         $('[data-toggle="popover"]').popover()
-		 
-         var map = L.map('map').setView([77.360, -291.83], 13);
-        
-         L.tileLayer('', {
-         	maxZoom: 18,
-         	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-         		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-         		'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-         	id: 'examples.map-20v6611k'
-         }).addTo(map);
-         
-         var start = L.icon({
-         	iconUrl: 'asset/images/start.png',
-         	iconSize: [32, 37],
-         	iconAnchor: [16, 37],
-         	popupAnchor: [0, -28]
-         });
-       
-         var end  = L.icon({
-         	iconUrl: 'asset/images/end.png',
-         	iconSize: [32, 37],
-         	iconAnchor: [16, 37],
-         	popupAnchor: [0, -28]
-         });
+      <!-- /.container-fluid -->
+    </nav>
+    <div>
+      <div id="map"></div>
+      <div class="footer">
+        <p>
+        <a href="https://github.com/timfeirg/navipath">Navipath project </a>including navipath tornado server
+        </p>
+        <p>
+        and QGIS generated shapefiles for demo.
+        </p>
+        <p> © NaviPath By 
+        <a href="https://github.com/timlentse">Timlentse</a>
+        &
+        <a href="https://github.com/timfeirg">Timfeirg </a> 
+        </p>
+      </div>
+    </div>
+    <script src="asset/js/poi.js" type="text/javascript"></script>
+    <script> 
+$('[data-toggle="popover"]').popover();
 
-         var poi   = L.icon({
-         	iconUrl: 'asset/images/footprint.png',
-         	iconSize: [32, 37],
-         	iconAnchor: [16, 37],
-         	popupAnchor: [0, -28]
-         });
+var map = L.map('map').setView([23.067171470549656, 113.38006496429443], 18);
 
-         function onEachFeature(feature, layer) {
-          var lat_lng = layer.getLatLng();
-          var popupContent = "<p>This is a popup content.You can fill this content with the pois features desc<br>"
-            +lat_lng.lat + lat_lng.lng +"</p>"
-         
-         	if (feature.properties && feature.properties.popupContent) {
-         		popupContent += feature.properties.popupContent;
-         	}
-         
-         	layer.bindPopup(popupContent);
-         }
-         
-         L.geoJson(pois, {
-         	style: function (feature) {
-         		return feature.properties && feature.properties.style;
-         	},
-         
-         	onEachFeature: onEachFeature,
-         
-         	pointToLayer: function (feature, latlng) {
-          return L.marker(latlng, {icon: poi} );
-         	}
-         }).addTo(map);
-      </script>
-      <script src="asset/js/location.js" type="text/javascript"></script>
-      <script>
-      get_lat_lng();
-      </script>
-   </body>
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    id: 'navipath.map'
+    }).addTo(map);
+var pathLayer= newPathLayer();
+pathLayer.addTo(map);
+map.on('click',addMarker);
+    </script>
+    <script src="asset/js/ajax.js"></script>
+  </body>
 </html>
