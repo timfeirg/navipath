@@ -1,4 +1,6 @@
 var markers = [] ;
+
+var path    = [];
 var paths =
 {
   "type": "FeatureCollection",
@@ -22,6 +24,7 @@ var paths =
 function addMarker(eventObject)
 {
   coordinate = [eventObject.latlng.lng, eventObject.latlng.lat]; 
+  path.push(coordinate);
   marker     =  L.marker(eventObject.latlng);
   markers.push(marker);
   marker.addTo(map);
