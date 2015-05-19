@@ -3,10 +3,11 @@ $("#new_path").click(function(e){
   e.preventDefault();
   postParams = setPostParams();
   alert(JSON.stringify(postParams));
+  console.log(JSON.stringify(postParams));
   if (postParams.from=="" || postParams.to=="")
     alert("Please input from and to");
   else { 
-    $.post("http://127.0.0.1:8888/path.json", postParams, function(data){
+    $.post("http://127.0.0.1:8888/path.json", JSON.stringify(postParams), function(data){
     });
   }
 });
@@ -20,7 +21,7 @@ $("#navigate").click( function(e){
   if (getParams.from=="" || getParams.to=="")
     alert("Please input from and to");
   else { 
-    $.get("http://127.0.0.1:8888/path.json", paths, function(data) {
+    $.get("http://127.0.0.1:8888/path.json", JSON.stringify(getParams), function(data) {
       alert(data);
     });
   }
