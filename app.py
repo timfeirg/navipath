@@ -8,6 +8,7 @@ Description: navipath tornado app
 
 import motor
 import os
+import json
 import tornado
 import tornado.web
 
@@ -77,8 +78,20 @@ class POIHandler(tornado.web.RequestHandler):
 
 class PathHandler(tornado.web.RequestHandler):
 
+    @tornado.gen.coroutine
     def get(self):
-        self.write('Hello, world')
+        db_path = self.settings['db'].path
+        cursor = db_path.find({}, {'_id': 0})
+        path_list = []
+        while (yield cursor.fetch_next):
+            doc = cursor.next_object()
+            path_list.append(doc)
+
+        response = {
+            'status': 0,
+            'result': path_list,
+        }
+        self.write(response)
 
     @tornado.gen.coroutine
     def post(self):
@@ -87,12 +100,10 @@ class PathHandler(tornado.web.RequestHandler):
         * `from`, `to` (list of float) - poi_id of the starting point and destination
         * `path` - (list of coordinates) - the actual path that's collected from the user
         """
-        print('----------------------------')
-        print(self.request.arguments)
         fromm = self.get_argument('from')
         too = self.get_argument('to')
-        raw_path = self.get_argument('path')
-        path = raw_path
+        raw_path = json.loads(self.get_argument('path'))
+        path = [[float(x), float(y)] for [x, y] in raw_path]
         doc = {
             'from': fromm,
             'to': too,
