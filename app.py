@@ -7,6 +7,7 @@ Description: navipath tornado app
 """
 
 import motor
+import os
 import tornado
 import tornado.web
 
@@ -15,6 +16,11 @@ import olc
 
 
 EARTH_RADIUS = 6378.1  # kilometers
+
+
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('index.html')
 
 
 class POIHandler(tornado.web.RequestHandler):
@@ -70,6 +76,7 @@ class POIHandler(tornado.web.RequestHandler):
 
 
 class PathHandler(tornado.web.RequestHandler):
+
     def get(self):
         self.write('Hello, world')
 
@@ -81,12 +88,11 @@ class PathHandler(tornado.web.RequestHandler):
         * `path` - (list of coordinates) - the actual path that's collected from the user
         """
         print('----------------------------')
+        print(self.request.arguments)
         fromm = self.get_argument('from')
         too = self.get_argument('to')
-        print(fromm, too)
-        print(self.request.arguments)
         raw_path = self.get_argument('path')
-        path = [float(f) for f in raw_path]
+        path = raw_path
         doc = {
             'from': fromm,
             'to': too,
@@ -94,19 +100,24 @@ class PathHandler(tornado.web.RequestHandler):
         }
 
         self.settings['db']['path'].insert(doc, callback=insert_callback)
-        responson = {'status': 'OK'}
-        self.write(responson)
 
+
+root = os.path.dirname(__file__)
+port = 8888
 
 mongo_client = motor.MotorClient('mongodb://localhost:27017')
 navipath_db = mongo_client['navipath']
 navipath_app = tornado.web.Application(
     [
+        (r"/", MainHandler),
+        (r'/asset/(.*)', tornado.web.StaticFileHandler, {'path': '/Users/timfeirg/Documents/navipath/asset'}),
         (r'/path.json', PathHandler),
         (r'/poi.json', POIHandler),
     ],
     db=navipath_db,
     debug=True,
+    template_path=root,
+    static_path=root
 )
 
 
@@ -122,5 +133,6 @@ def make_poi_id(longitude, latitude):
 
 
 if __name__ == '__main__':
-    navipath_app.listen(8888, address='0.0.0.0')
+    print(root)
+    navipath_app.listen(port, address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()
