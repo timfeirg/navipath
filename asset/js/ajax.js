@@ -3,10 +3,11 @@ $("#new_path").click(function(e){
   e.preventDefault();
   postParams = setPostParams();
   alert(JSON.stringify(postParams));
+  console.log(JSON.stringify(postParams));
   if (postParams.from=="" || postParams.to=="")
     alert("Please input from and to");
   else { 
-    $.post("http://172.19.52.100:8888/path.json", postParams, function(data){
+    $.post("http://172.19.52.100:8888/path.json", JSON.stringify(postParams), function(data){
     });
   }
 });
@@ -20,7 +21,7 @@ $("#navigate").click( function(e){
   if (getParams.from=="" || getParams.to=="")
     alert("Please input from and to");
   else { 
-    $.get("http://172.19.52.100:8888/path.json", paths, function(data) {
+    $.get("http://172.19.52.100:8888/path.json", JSON.stringify(getParams), function(data) {
       alert(data);
     });
   }
@@ -43,7 +44,7 @@ $("#new_poi").click( function(e){
 function setPostParams(){
   from_tag = document.getElementById('from').value;
   to_tag   = document.getElementById('to').value;
-  postData = {"status": 0, "result": path, "from": from_tag, "to": to_tag};
+  postData = {"status": 0, "path": path, "from": from_tag, "to": to_tag};
   return postData;
 }
 
