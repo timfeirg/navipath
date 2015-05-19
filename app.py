@@ -80,8 +80,11 @@ class PathHandler(tornado.web.RequestHandler):
         * `from`, `to` (list of float) - poi_id of the starting point and destination
         * `path` - (list of coordinates) - the actual path that's collected from the user
         """
+        print('----------------------------')
         fromm = self.get_argument('from')
         too = self.get_argument('to')
+        print(fromm, too)
+        print(self.request.arguments)
         raw_path = self.get_argument('path')
         path = [float(f) for f in raw_path]
         doc = {
