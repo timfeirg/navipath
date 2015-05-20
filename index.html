@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="asset/js/poi.js" type="text/javascript"></script>
     <!-- customize CSS!-->
     <link rel="stylesheet" href="asset/css/main.css"/>
   </head>
@@ -29,7 +30,17 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-navbar">
           <ul class="nav navbar-nav navbar-right">
-            <li><a><span class="glyphicon glyphicon-th" data-toggle="popover"  data-placement="bottom" title="Contributors" data-content="Timlentse  Timfeirg"></span></a></li>
+            <li style="margin-top:9px" >
+              <button type="button" class="btn btn-success" onclick="setPolling();">
+                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+              </button>
+            </li>
+            <li>
+              <a>
+                <span class="glyphicon glyphicon-th" data-toggle="popover"  data-placement="bottom" title="Contributors" data-content="Timlentse  Timfeirg">
+                </span>
+              </a>
+            </li>
           </ul>
           <!-- new path -->
           <form class="navbar-form navbar-right" id='path'>
@@ -68,7 +79,6 @@
         </p>
       </div>
     </div>
-    <script src="asset/js/poi.js" type="text/javascript"></script>
     <script> 
 $('[data-toggle="popover"]').popover();
 
@@ -81,9 +91,11 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
     id: 'navipath.map'
     }).addTo(map);
-var pathLayer= newPathLayer();
-pathLayer.addTo(map);
+newPathLayer.addTo(map);
+drawPathLayer.addTo(map);
+map.addLayer(markers);
 map.on('click',addMarker);
+generatePath(testString);
     </script>
     <script src="asset/js/ajax.js"></script>
   </body>
