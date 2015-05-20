@@ -144,6 +144,5 @@ def make_poi_id(longitude, latitude):
 
 
 if __name__ == '__main__':
-    print(root)
     navipath_app.listen(port, address='0.0.0.0')
     tornado.ioloop.IOLoop.instance().start()

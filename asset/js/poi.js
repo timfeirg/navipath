@@ -77,7 +77,7 @@ var drawPathLayer = L.geoJson();
 
 function addMarker(eventObj)
 {
-  coordinate = [eventObj.latlng.lng, eventObj.latlng.lat]; 
+  coordinate = [eventObj.latlng.lng, eventObj.latlng.lat];
   path.push(coordinate);
   populate(eventObj.latlng);
   pathsToRecord.geometry.coordinates.push(coordinate);
@@ -106,26 +106,24 @@ function replacePath(){
 
 function polling(){
   $.get("path.json", {"status": 0}, function(data){
-    console.log(response);
-    generatePath(data)
+    console.log(data);
+    generatePath(data);
   });
 }
 
 function generatePath(responseData){
-  var results = JSON.parse(responseData).result;
-
-  console.log(results.length);
-    for (var i=0; i<results.length;++i) {
-      result = results[i];  
-      pathsTobePrint.properties.from      = result.from;
-      pathsTobePrint.properties.to        = result.to;
-      console.log(result.path);
-      pathsTobePrint.geometry.coordinates = result.path;
+  console.log(responseData);
+  path_list = responseData.result
+    for (var i=0; i<path_list.length; ++i) {
+      single_path = path_list[i];
+      pathsTobePrint.properties.from = single_path.from;
+      pathsTobePrint.properties.to = single_path.to;
+      pathsTobePrint.geometry.coordinates = single_path.path;
       drawPathLayer.addData(pathsTobePrint);
     }
 }
 
 function setPolling(){
-  var intervalID = window.setInterval(polling, 3000);
+  var intervalID = window.setInterval(polling, 1000);
 }
 
