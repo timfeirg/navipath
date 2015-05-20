@@ -2,45 +2,42 @@ $("#new_path").click(function(e){
   // Stop form from submitting normally
   e.preventDefault();
   postParams = setPostParams();
-  console.log(postParams);
+  console.log(JSON.stringify(postParams));
   if (postParams.from=="" || postParams.to=="")
     alert("Please input from and to");
   else { 
+    clearAll();
     $.post("path.json", postParams, function(data){
-	    alert(data)
     });
   }
 });
 
-
-$("#navigate").click( function(e){
+$("#navigate").click(function(e){
   // Stop form from submitting normally
   e.preventDefault();
   getParams = setGetParams();
+  console.log(getParams);
   alert(getParams);
-  // alert(typeof(JSON.stringify(getParams)));
   if (getParams.from=="" || getParams.to=="")
     alert("Please input from and to");
   else { 
-    $.get("path.json", getParams, function(data) {
+    $.get("path.json", getParams, function(data){
       alert(data);
     });
   }
 });
 
-
-$("#new_poi").click( function(e){
+$("#new_poi").click(function(e){
   // Stop form from submitting normally
   e.preventDefault();
-  poiVal = document.getElementById("poi").value
-    if (poiVal=="")
-      alert("Please input from and to");
-    else { 
-      $.get("poi.json", {"poi": poiVal}, function(data) {
-      });
-    }
+  poiVal = document.getElementById("poi").value;
+  if (poiVal=="")
+    alert("Please input poi");
+  else { 
+    $.get("poi.json", {"poi": poiVal}, function(data){
+    });
+  }
 });
-
 
 function setPostParams(){
   from_tag = document.getElementById('from').value;
@@ -56,3 +53,9 @@ function setGetParams(){
   return getData;
 }
 
+function clearAll(){
+  pathsToRecord.geometry.coordinates = [];
+  path  = [];
+  newPathLayer.clearLayers();
+  markers.clearLayers();
+}
