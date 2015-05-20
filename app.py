@@ -116,12 +116,15 @@ class PathHandler(tornado.web.RequestHandler):
 root = os.path.dirname(__file__)
 port = 8888
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR))
+
 mongo_client = motor.MotorClient('mongodb://localhost:27017')
 navipath_db = mongo_client['navipath']
 navipath_app = tornado.web.Application(
     [
         (r"/", MainHandler),
-        (r'/asset/(.*)', tornado.web.StaticFileHandler, {'path': '/Users/timfeirg/Documents/navipath/asset'}),
+        (r'/asset/(.*)', tornado.web.StaticFileHandler, {'path': PROJECT_ROOT + '/asset'}),
         (r'/path.json', PathHandler),
         (r'/poi.json', POIHandler),
     ],
